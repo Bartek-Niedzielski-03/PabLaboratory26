@@ -1,6 +1,7 @@
 using AppCore.Repositories;
 using AppCore.Services;
 using Infrastructure.Memory;
+using AppCore.Module;
 
 namespace WebApi;
 
@@ -9,6 +10,9 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        builder.Services.AddAuthorization();
+        builder.Services.AddContactsModule(builder.Configuration);
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

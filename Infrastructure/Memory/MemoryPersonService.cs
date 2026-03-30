@@ -29,7 +29,7 @@ public class MemoryPersonService : IPersonService
         );
     }
 
-    public async Task<PersonDto?> FindByIdAsync(Guid id)
+    public async Task<PersonDto?> GetById(Guid id)
     {
         var person = await _unitOfWork.Persons.FindByIdAsync(id);
 
@@ -39,7 +39,7 @@ public class MemoryPersonService : IPersonService
         return PersonDto.FromEntity(person);
     }
 
-    public async Task<PersonDto> CreateAsync(CreatePersonDto dto)
+    public async Task<Person> AddPerson(CreatePersonDto dto)
     {
         Company? employer = null;
 
@@ -53,10 +53,9 @@ public class MemoryPersonService : IPersonService
 
         await _unitOfWork.SaveChangesAsync();
 
-        return PersonDto.FromEntity(created);
+        return created;
     }
-
-    public async Task<PersonDto> UpdateAsync(Guid id, UpdatePersonDto dto)
+    public async Task<Person> UpdatePerson(Guid id, UpdatePersonDto dto)
     {
         var person = await _unitOfWork.Persons.FindByIdAsync(id);
 
@@ -76,7 +75,7 @@ public class MemoryPersonService : IPersonService
 
         await _unitOfWork.SaveChangesAsync();
 
-        return PersonDto.FromEntity(updated);
+        return updated;
     }
 
     public async Task DeleteAsync(Guid id)

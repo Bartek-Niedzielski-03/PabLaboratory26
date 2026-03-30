@@ -1,3 +1,4 @@
+using AppCore.Dto;
 using AppCore.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,52 @@ public class ContactsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("persons")]
+    // GET /api/contacts
+    [HttpGet]
     public async Task<IActionResult> GetAllPersons([FromQuery] int page = 1, [FromQuery] int size = 20)
     {
-        return Ok(await _service.FindAllPeoplePaged(page, size));
+        var result = await _service.FindAllPeoplePaged(page, size);
+        return Ok(result);
+    }
+
+    // GET /api/contacts/{id}
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetPerson(Guid id)
+    {
+        var person = await _service.GetById(id);
+
+        if (person is null)
+            return NotFound();
+
+        return Ok(person);
+    }
+
+    // POST /api/contacts
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreatePersonDto dto)
+    {
+        var result = await _service.AddPerson(dto);
+
+        return CreatedAtAction(
+            nameof(GetPerson),
+            new { id = result.Id },
+            result
+        );
+    }
+
+    // PUT /api/contacts/{id}
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePersonDto dto)
+    {
+        var existing = await _service.GetById(id);
+
+        if (existing is null)
+            return NotFound();
+
+        await _service.UpdatePerson(id, dto);
+
+        var updated = await _service.GetById(id);
+
+        return Ok(updated);
     }
 }

@@ -1,6 +1,40 @@
 @WebApi_HostAddress = http://localhost:5073
 
-GET {{WebApi_HostAddress}}/weatherforecast/
+### GET all
+GET {{WebApi_HostAddress}}/api/contacts?page=1&size=10
 Accept: application/json
 
-###
+### GET by id (tu wstaw później prawdziwy guid)
+GET {{WebApi_HostAddress}}/api/contacts/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### CREATE poprawny
+POST {{WebApi_HostAddress}}/api/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Adam",
+  "lastName": "Nowak",
+  "email": "adam@wsei.edu.pl",
+  "phone": "48 123 456 789",
+  "birthDate": "1998-05-10",
+  "gender": 0
+}
+
+### CREATE błędny (test walidacji)
+POST {{WebApi_HostAddress}}/api/contacts
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "Nowak"
+}
+
+### UPDATE (wstaw guid po stworzeniu)
+PUT http://localhost:5073/api/contacts/fc8a795d-e82b-4bc9-ab1e-26c62c63a1d6
+Content-Type: application/json
+
+{
+  "firstName": "AdamUpdated",
+  "email": "adam.updated@wsei.edu.pl"
+}
