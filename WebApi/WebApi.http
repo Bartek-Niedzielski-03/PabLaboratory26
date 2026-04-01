@@ -1,14 +1,10 @@
 @WebApi_HostAddress = http://localhost:5073
 
-### GET all
-GET {{WebApi_HostAddress}}/api/contacts?page=1&size=10
+### GET all contacts
+GET {{WebApi_HostAddress}}/api/contacts
 Accept: application/json
 
-### GET by id (tu wstaw później prawdziwy guid)
-GET {{WebApi_HostAddress}}/api/contacts/00000000-0000-0000-0000-000000000000
-Accept: application/json
-
-### CREATE poprawny
+### CREATE poprawny, id do kopiowania
 POST {{WebApi_HostAddress}}/api/contacts
 Content-Type: application/json
 
@@ -21,7 +17,16 @@ Content-Type: application/json
   "gender": 0
 }
 
-### CREATE błędny (test walidacji)
+### GET by existing id
+GET {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737
+Accept: application/json
+
+### GET by id non exising
+GET {{WebApi_HostAddress}}/api/contacts/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+
+### CREATE contact blędny (test walidacji)
 POST {{WebApi_HostAddress}}/api/contacts
 Content-Type: application/json
 
@@ -30,11 +35,54 @@ Content-Type: application/json
   "lastName": "Nowak"
 }
 
-### UPDATE (wstaw guid po stworzeniu)
-PUT http://localhost:5073/api/contacts/fc8a795d-e82b-4bc9-ab1e-26c62c63a1d6
+### UPDATE exising conatc (wstaw id po stworzeniu)
+PUT {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737
 Content-Type: application/json
 
 {
   "firstName": "AdamUpdated",
   "email": "adam.updated@wsei.edu.pl"
 }
+
+###UPDATE non existing contact
+PUT {{WebApi_HostAddress}}/api/contacts/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "firstName": "Ghost",
+  "email": "ghost@wsei.edu.pl"
+}
+
+### Add note to existing person(skopiuj id notatki)
+
+POST {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes
+Content-Type: application/json
+
+{
+  "content": "New note"
+}
+
+### get note from existing contact
+
+GET {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes
+Accept: application/json
+
+### delete existing note
+DELETE {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes/caa45212-3437-4f13-8fa7-af0ec9ed55c7
+Accept: application/json
+
+### get note after delete
+GET {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes
+Accept: application/json
+
+### add note to non existing contact
+POST {{WebApi_HostAddress}}/api/contacts/00000000-0000-0000-0000-000000000000/notes
+Content-Type: application/json
+
+{
+  "content": "Should fail"
+}
+
+### delete non existing note 
+DELETE {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes/00000000-0000-0000-0000-000000000000
+Accept: application/json

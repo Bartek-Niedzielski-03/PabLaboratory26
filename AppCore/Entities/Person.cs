@@ -13,10 +13,8 @@ public class Person : Contact
 
     public string? Position { get; set; }
 
-    // UML: Employer? Company
     public Company? Employer { get; set; }
-
-    // UML: Organization? (członkostwo)
+    
     public Organization? Organization { get; set; }
 
     public override string GetDisplayName() => $"{FirstName} {LastName}".Trim();
