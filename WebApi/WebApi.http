@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ### GET by existing id
-GET {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737
+GET {{WebApi_HostAddress}}/api/contacts/acc1348d-c9f0-436a-a456-d2ccc854d9a8
 Accept: application/json
 
 ### GET by id non exising
@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 
 ### UPDATE exising conatc (wstaw id po stworzeniu)
-PUT {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737
+PUT {{WebApi_HostAddress}}/api/contacts/7f802b2e-c745-42ed-843f-db9abf032dbb
 Content-Type: application/json
 
 {
@@ -55,7 +55,7 @@ Content-Type: application/json
 
 ### Add note to existing person(skopiuj id notatki)
 
-POST {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes
+POST {{WebApi_HostAddress}}/api/contacts/acc1348d-c9f0-436a-a456-d2ccc854d9a8/notes
 Content-Type: application/json
 
 {
@@ -64,15 +64,15 @@ Content-Type: application/json
 
 ### get note from existing contact
 
-GET {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes
+GET {{WebApi_HostAddress}}/api/contacts/acc1348d-c9f0-436a-a456-d2ccc854d9a8/notes
 Accept: application/json
 
 ### delete existing note
-DELETE {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes/caa45212-3437-4f13-8fa7-af0ec9ed55c7
+DELETE {{WebApi_HostAddress}}/api/contacts/7f802b2e-c745-42ed-843f-db9abf032dbb/notes/fb3aa7b3-bfce-4c84-8a48-9ac582539292
 Accept: application/json
 
 ### get note after delete
-GET {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes
+GET {{WebApi_HostAddress}}/api/contacts/7f802b2e-c745-42ed-843f-db9abf032dbb/notes
 Accept: application/json
 
 ### add note to non existing contact
@@ -84,5 +84,39 @@ Content-Type: application/json
 }
 
 ### delete non existing note 
-DELETE {{WebApi_HostAddress}}/api/contacts/82c6469d-1fca-4938-aacb-509bf5f85737/notes/00000000-0000-0000-0000-000000000000
+DELETE {{WebApi_HostAddress}}/api/contacts/7f802b2e-c745-42ed-843f-db9abf032dbb/notes/00000000-0000-0000-0000-000000000000
 Accept: application/json
+
+### new contact
+POST http://localhost:5073/api/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Jan",
+  "lastName": "Kowalski",
+  "email": "jan.kowalski@wsei.edu.pl",
+  "phone": "123456789",
+  "birthDate": "2000-01-01",
+  "gender": 0
+}
+
+### get all cont
+GET http://localhost:5073/api/contacts
+Accept: application/json
+
+### DELETE contact
+DELETE http://localhost:5073/api/contacts/d10c3b5c-9292-4a1b-9c3e-123456789abc
+Accept: application/json
+
+### create contact2
+POST http://localhost:5073/api/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Anna",
+  "lastName": "Zielińska",
+  "email": "anna.zielinska@wsei.edu.pl",
+  "phone": "500600700",
+  "birthDate": "1999-04-15",
+  "gender": 1
+}

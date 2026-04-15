@@ -8,16 +8,20 @@ namespace AppCore.Module;
 
 public static class ContactsModule
 {
+    public static IServiceCollection AddContactsCoreModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddValidatorsFromAssemblyContaining<CreatePersonDtoValidator>();
+        services.AddFluentValidationAutoValidation();
+
+        return services;
+    }
+
     public static IServiceCollection AddContactsModule(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        //rejestracja walidatorów
-        services.AddValidatorsFromAssemblyContaining<CreatePersonDtoValidator>();
-
-        //wlaczenie automatycznej walidacji
-        services.AddFluentValidationAutoValidation();
-
-        return services;
+        return services.AddContactsCoreModule(configuration);
     }
 }

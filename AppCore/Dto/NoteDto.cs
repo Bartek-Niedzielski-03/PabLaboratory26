@@ -1,6 +1,7 @@
 using AppCore.Entities;
 using AppCore.Enums;
 
+namespace AppCore.Dto;
 public record NoteDto
 {
     public Guid Id { get; init; }
