@@ -120,3 +120,22 @@ Content-Type: application/json
   "birthDate": "1999-04-15",
   "gender": 1
 }
+
+### get contacts bez tokena
+GET http://localhost:5073/api/contacts
+Accept: application/json
+
+### login
+POST http://localhost:5073/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "sales@crm.local",
+  "password": "Sales@123!"
+}
+
+### get contacts token
+GET http://localhost:5073/api/contacts
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJCQkJCQkJCLUJCQkItQkJCQi1CQkJCLUJCQkJCQkJCQkJCQiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InNhbGVzQGNybS5sb2NhbCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2dpdmVubmFtZSI6IkFubmEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zdXJuYW1lIjoiU3ByemVkYXoiLCJkZXBhcnRtZW50IjoiU2FsZXMiLCJzdGF0dXMiOiJBY3RpdmUiLCJqdGkiOiJhYmUxZDlmYS02NDk1LTQ1OTctYmMxZi01ZTYzMzAzZGQ3OWMiLCJpYXQiOiIxNzc2ODExNjkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU2FsZXNwZXJzb24iLCJuYmYiOjE3NzY4MTE2OTMsImV4cCI6MTc3NjgxNTI5MywiaXNzIjoiSWRlaXNDcm1BcGkiLCJhdWQiOiJDcm1DbGllbnQifQ.S1OCc-c7AQfURLNX_0h_7clNQqIG29N-w1jLGnk7htY
+

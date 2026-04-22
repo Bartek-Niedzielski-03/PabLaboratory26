@@ -5,6 +5,7 @@ using Infrastructure.EntityFramework.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Security;
 
 namespace Infrastructure.EntityFramework.Context;
 
@@ -13,6 +14,7 @@ public class ContactsDbContext : IdentityDbContext<CrmUser, CrmRole, string>
     public DbSet<Person> People { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<Organization> Organizations { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
     public ContactsDbContext()
     {
