@@ -1,6 +1,7 @@
 using AppCore.Entities;
 using AppCore.Enums;
 using AppCore.Users;
+using AppCore.ValueObjects;
 using Infrastructure.EntityFramework.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -56,7 +57,11 @@ public class ContactsDbContext : IdentityDbContext<CrmUser, CrmRole, string>
         builder.Entity<Contact>(entity =>
         {
             entity.Property(c => c.Email).HasMaxLength(200);
-            entity.Property(c => c.Phone).HasMaxLength(20);
+            entity.Property(c => c.Phone)
+                .HasMaxLength(30)
+                .HasConversion(
+                    p => p.Value,
+                    v => PhoneNumber.Create(v));
             entity.Property(c => c.Status).HasConversion<string>();
         });
 
@@ -149,7 +154,7 @@ public class ContactsDbContext : IdentityDbContext<CrmUser, CrmRole, string>
                 Id = companyId,
                 Name = "WSEI",
                 Industry = "edukacja",
-                Phone = "123567123",
+                Phone = PhoneNumber.Create("123567123"),
                 Email = "biuro@wsei.edu.pl",
                 Website = "https://wsei.edu.pl",
                 Status = ContactStatus.Active,
@@ -168,7 +173,7 @@ public class ContactsDbContext : IdentityDbContext<CrmUser, CrmRole, string>
                 Gender = Gender.Male,
                 Status = ContactStatus.Active,
                 Email = "adam@wsei.edu.pl",
-                Phone = "123456789",
+                Phone = PhoneNumber.Create("123456789"),
                 BirthDate = new DateTime(2001, 1, 11),
                 Position = "Programista",
                 CreatedAt = createdAt,
@@ -184,7 +189,7 @@ public class ContactsDbContext : IdentityDbContext<CrmUser, CrmRole, string>
                 Gender = Gender.Female,
                 Status = ContactStatus.Blocked,
                 Email = "ewa@wsei.edu.pl",
-                Phone = "123123123",
+                Phone = PhoneNumber.Create("123123123"),
                 BirthDate = new DateTime(2001, 1, 11),
                 Position = "Tester",
                 CreatedAt = createdAt,

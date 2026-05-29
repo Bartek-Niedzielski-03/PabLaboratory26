@@ -1,6 +1,7 @@
 using AppCore.Entities;
 using AppCore.Enums;
 using AppCore.Repositories;
+using AppCore.ValueObjects;
 
 namespace Infrastructure.Memory;
 
@@ -29,7 +30,7 @@ public class MemoryPersonRepository : MemoryGenericRepository<Person>, IPersonRe
             LastName = "Nowak",
             Gender = Gender.Male,
             Email = "adam.nowak@example.com",
-            Phone = "111222333",
+            Phone = PhoneNumber.Create("111222333"),
             Employer = company,
             Organization = organization
         };
@@ -41,7 +42,7 @@ public class MemoryPersonRepository : MemoryGenericRepository<Person>, IPersonRe
             LastName = "Kowalska",
             Gender = Gender.Female,
             Email = "ewa.kowalska@example.com",
-            Phone = "444555666",
+            Phone = PhoneNumber.Create("444555666"),
             Employer = company,
             Organization = organization
         };

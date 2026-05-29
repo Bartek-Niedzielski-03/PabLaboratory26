@@ -1,5 +1,6 @@
 ﻿using AppCore.Entities;
 using AppCore.Repositories;
+using AppCore.ValueObjects;
 using Infrastructure.Memory;
 
 namespace PabLaboratory26Tests;
@@ -21,7 +22,7 @@ public class MemoryGenericRepositoryTests
             FirstName = "Adam",
             LastName = "Nowak",
             Email = "adam@test.pl",
-            Phone = "123456789"
+            Phone = PhoneNumber.Create("123456789"),
         };
 
         await _repo.AddAsync(person);
@@ -43,8 +44,8 @@ public class MemoryGenericRepositoryTests
     [Fact]
     public async Task FindAllAsync_ShouldReturnAllEntities()
     {
-        var p1 = new Person { FirstName = "Jan", LastName = "Kowalski", Email = "jan@test.pl", Phone = "111" };
-        var p2 = new Person { FirstName = "Anna", LastName = "Nowak", Email = "anna@test.pl", Phone = "222" };
+        var p1 = new Person { FirstName = "Jan", LastName = "Kowalski", Email = "jan@test.pl", Phone = PhoneNumber.Create("111") };
+        var p2 = new Person { FirstName = "Anna", LastName = "Nowak", Email = "anna@test.pl", Phone = PhoneNumber.Create("222") };
 
         await _repo.AddAsync(p1);
         await _repo.AddAsync(p2);
@@ -62,7 +63,7 @@ public class MemoryGenericRepositoryTests
             FirstName = "Adam",
             LastName = "Nowak",
             Email = "adam@test.pl",
-            Phone = "123"
+            Phone = PhoneNumber.Create("123"),
         };
 
         await _repo.AddAsync(person);
@@ -84,7 +85,7 @@ public class MemoryGenericRepositoryTests
             FirstName = "Ghost",
             LastName = "User",
             Email = "ghost@test.pl",
-            Phone = "000"
+            Phone = PhoneNumber.Create("000"),
         };
 
         await Assert.ThrowsAsync<KeyNotFoundException>(() => _repo.UpdateAsync(person));
@@ -98,7 +99,7 @@ public class MemoryGenericRepositoryTests
             FirstName = "Adam",
             LastName = "Nowak",
             Email = "adam@test.pl",
-            Phone = "123"
+            Phone = PhoneNumber.Create("123"),
         };
 
         await _repo.AddAsync(person);
@@ -125,7 +126,7 @@ public class MemoryGenericRepositoryTests
                 FirstName = $"Name{i}",
                 LastName = $"Last{i}",
                 Email = $"person{i}@test.pl",
-                Phone = $"{i}"
+                Phone = PhoneNumber.Create("{i}"),
             });
         }
 

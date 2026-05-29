@@ -1,5 +1,6 @@
 using AppCore.Entities;
 using AppCore.Enums;
+using AppCore.ValueObjects;
 using Infrastructure.EntityFramework.Context;
 using Infrastructure.EntityFramework.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -31,86 +32,100 @@ public class PersonDbSeeder : IDataSeeder
 
     public async Task SeedAsync()
     {
-        await ResetTestUserPassword();
-
-        if (await _context.People.AnyAsync())
+        try
         {
-            _logger.LogInformation("Osoby już istnieją w bazie — pomijam seed Person.");
-            return;
-        }
+            await ResetTestUserPassword();
 
-        var createdAt = DateTime.UtcNow;
-
-        var people = new List<Person>
-        {
-            new()
+            if (await _context.People.AnyAsync())
             {
-                FirstName = "Jan",
-                LastName = "Kowalski",
-                Email = "jan.kowalski@example.com",
-                Phone = "111222333",
-                Position = "Handlowiec",
-                BirthDate = new DateTime(1995, 5, 10),
-                Gender = Gender.Male,
-                Status = ContactStatus.Active,
-                CreatedAt = createdAt
-            },
-            new()
-            {
-                FirstName = "Anna",
-                LastName = "Nowak",
-                Email = "anna.nowak@example.com",
-                Phone = "444555666",
-                Position = "Specjalista ds. wsparcia",
-                BirthDate = new DateTime(1997, 8, 15),
-                Gender = Gender.Female,
-                Status = ContactStatus.Active,
-                CreatedAt = createdAt
-            },
-            new()
-            {
-                FirstName = "Piotr",
-                LastName = "Wiśniewski",
-                Email = "piotr.wisniewski@example.com",
-                Phone = "777888999",
-                Position = "Tester",
-                BirthDate = new DateTime(1993, 2, 20),
-                Gender = Gender.Male,
-                Status = ContactStatus.Active,
-                CreatedAt = createdAt
+                _logger.LogInformation("Osoby już istnieją w bazie — pomijam seed Person.");
+                return;
             }
-        };
 
-        await _context.People.AddRangeAsync(people);
-        await _context.SaveChangesAsync();
+            var createdAt = DateTime.UtcNow;
 
-        _logger.LogInformation("Dodano przykładowe kontakty typu Person.");
+            var people = new List<Person>
+            {
+                new()
+                {
+                    FirstName = "Jan",
+                    LastName = "Kowalski",
+                    Email = "jan.kowalski@example.com",
+                    Phone = PhoneNumber.Create("111222333"),
+                    Position = "Handlowiec",
+                    BirthDate = new DateTime(1995, 5, 10),
+                    Gender = Gender.Male,
+                    Status = ContactStatus.Active,
+                    CreatedAt = createdAt
+                },
+                new()
+                {
+                    FirstName = "Anna",
+                    LastName = "Nowak",
+                    Email = "anna.nowak@example.com",
+                    Phone = PhoneNumber.Create("444555666"),
+                    Position = "Specjalista ds. wsparcia",
+                    BirthDate = new DateTime(1997, 8, 15),
+                    Gender = Gender.Female,
+                    Status = ContactStatus.Active,
+                    CreatedAt = createdAt
+                },
+                new()
+                {
+                    FirstName = "Piotr",
+                    LastName = "Wiśniewski",
+                    Email = "piotr.wisniewski@example.com",
+                    Phone = PhoneNumber.Create("777888999"),
+                    Position = "Tester",
+                    BirthDate = new DateTime(1993, 2, 20),
+                    Gender = Gender.Male,
+                    Status = ContactStatus.Active,
+                    CreatedAt = createdAt
+                }
+            };
+
+            await _context.People.AddRangeAsync(people);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Dodano przykładowe kontakty typu Person.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning("Pominięto seed danych: {Message}", ex.Message);
+        }
     }
 
     private async Task ResetTestUserPassword()
     {
-        const string email = "sales@crm.local";
-        const string newPassword = "Sales@123!";
-
-        var user = await _userManager.FindByEmailAsync(email);
-
-        if (user is null)
+        try
         {
-            _logger.LogWarning("Nie znaleziono użytkownika {Email}", email);
-            return;
+            const string email = "sales@crm.local";
+            const string newPassword = "Sales@123!";
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user is null)
+            {
+                _logger.LogWarning("Nie znaleziono użytkownika {Email}", email);
+                return;
+            }
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Błąd ustawiania hasła: {Errors}",
+                    string.Join("; ", result.Errors.Select(e => e.Description)));
+                return;
+            }
+
+            _logger.LogInformation("Ustawiono hasło dla użytkownika {Email}", email);
         }
-
-        user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
-
-        var result = await _userManager.UpdateAsync(user);
-
-        if (!result.Succeeded)
+        catch (Exception ex)
         {
-            _logger.LogError("Błąd ustawiania hasła: {Errors}",
-                string.Join("; ", result.Errors.Select(e => e.Description)));
-            return;
+            _logger.LogWarning("Pominięto ResetTestUserPassword: {Message}", ex.Message);
         }
-
-        _logger.LogInformation("Ustawiono hasło dla użytkownika {Email}", email);
     }
 }

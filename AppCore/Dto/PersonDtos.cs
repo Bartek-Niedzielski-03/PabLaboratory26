@@ -1,5 +1,6 @@
 using AppCore.Entities;
 using AppCore.Enums;
+using AppCore.ValueObjects;
 
 namespace AppCore.Dto;
 
@@ -26,7 +27,7 @@ public record PersonDto : ContactBaseDto
             EmployerId = person.Employer?.Id,
 
             Email = person.Email,
-            Phone = person.Phone,
+            Phone = person.Phone.Value,
             Address = AddressDto.FromEntity(person.Address),
             Status = person.Status,
             Tags = person.Tags.Select(t => t.Name).ToList(),
@@ -55,7 +56,7 @@ public record CreatePersonDto(
             FirstName = FirstName,
             LastName = LastName,
             Email = Email,
-            Phone = Phone,
+            Phone = PhoneNumber.Create(Phone),
             Position = Position,
             BirthDate = BirthDate,
             Gender = Gender,
@@ -92,7 +93,7 @@ public record UpdatePersonDto(
             person.Email = Email;
 
         if (Phone is not null)
-            person.Phone = Phone;
+            person.Phone = PhoneNumber.Create(Phone);
 
         if (Position is not null)
             person.Position = Position;

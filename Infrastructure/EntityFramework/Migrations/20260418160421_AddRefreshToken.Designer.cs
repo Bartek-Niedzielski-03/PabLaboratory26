@@ -3,6 +3,7 @@ using System;
 using Infrastructure.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(ContactsDbContext))]
-    partial class ContactsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418160421_AddRefreshToken")]
+    partial class AddRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.14");
@@ -31,9 +34,6 @@ namespace Infrastructure.EntityFramework.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -41,7 +41,7 @@ namespace Infrastructure.EntityFramework.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
@@ -151,6 +151,7 @@ namespace Infrastructure.EntityFramework.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
